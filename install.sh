@@ -5,18 +5,18 @@ set -e
 #define variables
 
 #name alias for script: get IP address
-alias_name_ip='ip'
+alias_name_ip='ip-info'
 if command -v $alias_name_ip >/dev/null 2>&1; then
   echo -e " ${alias_name_ip} already exists"
-  alias_name_ip='ip-info'
+  alias_name_ip='2ip-info'
   echo -e " change alias name to ${alias_name_ip}"
 fi
 
 #name alias for script: get IP and geo information
-alias_name_location='location'
+alias_name_location='location-info'
 if command -v $alias_name_location >/dev/null 2>&1; then
     echo -e " ${alias_name_location} already exists"
-  alias_name_location='location-info'
+  alias_name_location='2location-info'
   echo -e " change alias name to ${alias_name_location}"
 fi
 
