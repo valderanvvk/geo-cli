@@ -13,10 +13,10 @@ if command -v $alias_name_ip >/dev/null 2>&1; then
 fi
 
 #name alias for script: get IP and geo information
-alias_name_location='location-info'
+alias_name_location='location'
 if command -v $alias_name_location >/dev/null 2>&1; then
     echo -e " ${alias_name_location} already exists"
-  alias_name_location='2location-info'
+  alias_name_location='location-info'
   echo -e " change alias name to ${alias_name_location}"
 fi
 
