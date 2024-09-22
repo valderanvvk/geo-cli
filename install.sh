@@ -6,8 +6,19 @@ set -e
 
 #name alias for script: get IP address
 alias_name_ip='ip'
+if command -v $alias_name_ip >/dev/null 2>&1; then
+  echo -e " ${alias_name_ip} already exists"
+  alias_name_ip='ip-info'
+  echo -e " change alias name to ${alias_name_ip}"
+fi
+
 #name alias for script: get IP and geo information
 alias_name_location='location'
+if command -v $alias_name_location >/dev/null 2>&1; then
+    echo -e " ${alias_name_location} already exists"
+  alias_name_location='location-info'
+  echo -e " change alias name to ${alias_name_location}"
+fi
 
 #path to this script
 script_path=$(readlink -f "$0")
@@ -16,8 +27,7 @@ script_dir=$(dirname "$script_path")
 
 get_ip_file=$script_dir/get-ip.sh
 get_location_file=$script_dir/get-location.sh
-bashalias_file=$HOME/.bash_alias
-
+bashalias_file=$HOME/.bash_aliases
 clear
 
 # Reset
@@ -119,17 +129,31 @@ if [ $installStatus -eq 1 ]; then
   read choice
 
   if [ "$choice" = 'Y' ] || [ "$choice" = 'y' ]; then
-    echo -e "\n${BCyan}Adding aliases${NC}"
+    echo -e "\n${BCyan}Adding aliases${NC}:"
     echo -e "${Cyan}Check file: ${BWhite}${bashalias_file} ${NC}"
+
+    if [ ! -f "$bashalias_file" ]; then
+
+      echo -e "\n${Red}file not found: ${White}$bashalias_file${NC}"
+      printf "${Yellow}create file ${White}${bashalias_file}? ${NC}(Y/N): "
+      read isAliasFileCreate
+
+      if [ "$isAliasFileCreate" = 'Y' ] || [ "$isAliasFileCreate" = 'y' ]; then
+        touch "$bashalias_file"
+        echo -e "${Green}file created: ${Yellow}$bashalias_file${NC}"
+      fi
+
+    fi
+
     if [ -f "$bashalias_file" ]; then
       echo -e "${Cyan}Add aliases($bashalias_file):${NC} \n - '${alias_name_ip}' (show ip) -> get-ip.sh \n - '${alias_name_location}' (show ip,country,region,city) -> get-location.sh"
       echo -e "alias $alias_name_ip='bash $get_ip_file'" >> "$bashalias_file"
       echo -e "alias $alias_name_location='bash $get_location_file'" >>"$bashalias_file"
-      echo -e "${Green}Alias was added automatically.${NC}"
+      echo -e "${Green}Alias was added.${NC}"
       echo -e "\n${UYellow}run:${NC} ${BWhite}source ${bashalias_file}${NC} ${UYellow}or restart${NC} the terminal${NC}"
     else
       echo -e "${Red}File $bashalias_file not found${NC}"
-      echo -e "${Yellow}Create file $bashalias_file and add alias for files get-ip.sh and get-location.sh${NC}"
+      echo -e "${BYellow}Create file $bashalias_file(or your aliases file) and add alias for files get-ip.sh and get-location.sh${NC}"
     fi
   fi
 
@@ -137,7 +161,7 @@ fi
 
 echo -e "\n${BPurple}End of installation.${NC}"
 echo -e "\n${BBlue}Uninstallation:${NC}"
-echo -e "${White} - delete aliases 'ip' and 'location' from $bashalias_file${NC}"
+echo -e "${White} - delete aliases '${alias_name_ip}' and '${alias_name_location}' from $bashalias_file$ or your aliases file${NC}"
 echo -e "${White} - delete work directory with files ${script_dir}${NC}"
 echo -e "${BBlue}Congratulations, you have finished deleting.${NC}"
 echo -e "\n${BYellow}Thanks for using this script${NC}"
